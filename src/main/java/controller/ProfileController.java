@@ -23,6 +23,4 @@ public class ProfileController {
     public Result showGameHistory(int n) {
         return null;
     }
-    
-
 }
