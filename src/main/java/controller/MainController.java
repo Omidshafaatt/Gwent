@@ -9,4 +9,6 @@ public class MainController {
         Result result = new Result ("no", user.isPlayingGame());
         return null;
     }
+
+    public void loader() {}
 }
