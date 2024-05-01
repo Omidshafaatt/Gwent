@@ -70,5 +70,12 @@ public class User {
 
     public static User getUserByUsername(String username) {return null;}
 
-    public static boolean doesUserExist(String username) {return false;}
+    public static boolean doesUsernameExist(String username) {return false;}
+    public static boolean doesNicknameExist(String nickname) {
+        return false;
+    }
+    public static boolean doesEmailExist(String email) {
+        return false;
+    }
+
 }
