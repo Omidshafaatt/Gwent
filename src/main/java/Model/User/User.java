@@ -66,9 +66,18 @@ public class User {
         this.userGameHistories.add(0, gameHistory);
     }
 
-    public static void removeUser(User user) {}
+    public static void removeUser(User user) {
+    }
 
-    public static User getUserByUsername(String username) {return null;}
+    public static User getUserByUsername(String username) {
+        return null;
+    }
 
-    public static boolean doesUserExist(String username) {return false;}
+    public static boolean doesUserExist(String username) {
+        return false;
+    }
+
+    public String returnQuestion(int questionNumber) {
+        return passwordQuestions.get(questionNumber);
+    }
 }
