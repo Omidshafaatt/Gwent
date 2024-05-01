@@ -14,6 +14,8 @@ public class User {
     private ArrayList<GameHistory> userGameHistories = new ArrayList<>();
     private ArrayList<String> passwordQuestions = new ArrayList<>();
     private ArrayList<String> passwordAnswers = new ArrayList<>();
+    private boolean isPlayingGame;
+    private static User loggedInUser;
     private static ArrayList<User> allUsers = new ArrayList<>();
 
     public User(String username, String password, String nickname, String email) {
@@ -40,6 +42,50 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public UserGameInfo getGameInfo() {
+        return gameInfo;
+    }
+
+    public ArrayList<GameHistory> getUserGameHistories() {
+        return userGameHistories;
+    }
+
+    public ArrayList<String> getPasswordQuestions() {
+        return passwordQuestions;
+    }
+
+    public ArrayList<String> getPasswordAnswers() {
+        return passwordAnswers;
+    }
+
+    public boolean isPlayingGame() {
+        return isPlayingGame;
+    }
+
+    public void setCardInventory(UserCardInventory cardInventory) {
+        this.cardInventory = cardInventory;
+    }
+
+    public void setGameInfo(UserGameInfo gameInfo) {
+        this.gameInfo = gameInfo;
+    }
+
+    public void setUserGameHistories(ArrayList<GameHistory> userGameHistories) {
+        this.userGameHistories = userGameHistories;
+    }
+
+    public void setPasswordQuestions(ArrayList<String> passwordQuestions) {
+        this.passwordQuestions = passwordQuestions;
+    }
+
+    public void setPasswordAnswers(ArrayList<String> passwordAnswers) {
+        this.passwordAnswers = passwordAnswers;
+    }
+
+    public void setPlayingGame(boolean playingGame) {
+        isPlayingGame = playingGame;
     }
 
     public void setUsername(String username) {
@@ -78,4 +124,5 @@ public class User {
         return false;
     }
 
+    public static User getLoggedInUser() {return loggedInUser;}
 }

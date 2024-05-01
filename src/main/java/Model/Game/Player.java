@@ -134,10 +134,15 @@ public class Player {
 
     public int getCloseRowStrength() {return 0;}
 
+    public String showCloseRowCards() {return null;}
+
     public int getRangedRowStrength() {return 0;}
+
+    public String showRangedRowCards() {return null;}
 
     public int getSiegeRowStrength() {return 0;}
 
+    public String showSiegeRowCards() {return null;}
     public void nextRound() {}
 
     private void applyFactionAbility() {}

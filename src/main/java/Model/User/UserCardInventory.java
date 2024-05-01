@@ -9,6 +9,7 @@ public class UserCardInventory {
     private UserFaction monsters;
     private UserFaction scoiatael;
     private UserFaction skellige;
+    private UserFaction currentFaction;
 
     private static ArrayList<UserCardInventory> allUserInventories = new ArrayList<>();
 
@@ -40,4 +41,33 @@ public class UserCardInventory {
     public UserFaction getSkellige() {
         return skellige;
     }
+
+    public UserFaction getCurrentFaction() {
+        return currentFaction;
+    }
+
+    public void setNorthernRealms(UserFaction northernRealms) {
+        this.northernRealms = northernRealms;
+    }
+
+    public void setNilfgaardEmpire(UserFaction nilfgaardEmpire) {
+        this.nilfgaardEmpire = nilfgaardEmpire;
+    }
+
+    public void setMonsters(UserFaction monsters) {
+        this.monsters = monsters;
+    }
+
+    public void setScoiatael(UserFaction scoiatael) {
+        this.scoiatael = scoiatael;
+    }
+
+    public void setSkellige(UserFaction skellige) {
+        this.skellige = skellige;
+    }
+
+    public void setCurrentFaction(UserFaction currentFaction) {
+        this.currentFaction = currentFaction;
+    }
 }
+
