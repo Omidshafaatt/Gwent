@@ -1,5 +1,6 @@
 package controller;
 
+import Model.Game.Player;
 import Model.Result;
 import Model.User.User;
 
@@ -13,14 +14,19 @@ public class LoginController {
     public Result login(String username, String password) {
         if (User.doesUserExist(username)) {
             if (User.getUserByUsername(username).getPassword().equals(password)) {
-                return new Result("login successful", true);
+                User.setLoggedInUser(User.getUserByUsername(username));
+                return new Result("Logged in!", "Logging into game successfully.", true);
+            } else if (password.equals("")){
+                return new Result("Wrong Password!", "Entered password is wrong.", false);
             } else {
-                return new Result("password is wrong", false);
+                return new Result("Empty password!", "You haven't field the password box yet.", false);
             }
+        } else if (username.equals("")) {
+            return new Result("Empty Username!", "You haven't field the username box yet.", false);
         } else {
-            return new Result("user does not exist", false);
-        }
+            return new Result("Wrong Username!", "Username \"" + username + "\" does not exist.", false);
 
+        }
     }
 
     public Result forgotPassword(String username) {
