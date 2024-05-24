@@ -21,9 +21,13 @@ public class GameHistory {
         this.gameDate = new Date();
     }
 
-    public int getUser1TotalScore() {return 0;}
+    public int getUser1TotalScore() {
+        return 0;
+    }
 
-    public int getUser2TotalScore() {return 0;}
+    public int getUser2TotalScore() {
+        return 0;
+    }
 
     public User getUser1() {
         return user1;
@@ -65,5 +69,10 @@ public class GameHistory {
             user1EveryRoundScore.add(score);
         else
             user2EveryRoundScore.add(score);
+    }
+
+    public void end() {
+        user1.getGameInfo().addScore(getUser1TotalScore());
+        user2.getGameInfo().addScore(getUser2TotalScore());
     }
 }

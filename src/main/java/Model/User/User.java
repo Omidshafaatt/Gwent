@@ -113,6 +113,7 @@ public class User {
     }
 
     public static void removeUser(User user) {
+        allUsers.remove(user);
     }
 
     public static User getUserByUsername(String username) {
@@ -126,17 +127,33 @@ public class User {
         return passwordQuestions.get(questionNumber);
     }
 
-    public static boolean doesUsernameExist(String username) {return false;}
+    public static boolean doesUsernameExist(String username) {
+        for (User user : allUsers) {
+            if (user.getUsername().equals(username))
+                return true;
+        }
+        return false;
+    }
 
     public static boolean doesNicknameExist(String nickname) {
+        for (User user : allUsers) {
+            if (user.getNickname().equals(nickname))
+                return true;
+        }
         return false;
     }
 
     public static boolean doesEmailExist(String email) {
+        for (User user : allUsers) {
+            if (user.getEmail().equals(email))
+                return true;
+        }
         return false;
     }
 
-    public static User getLoggedInUser() {return loggedInUser;}
+    public static User getLoggedInUser() {
+        return loggedInUser;
+    }
 
     public static void setLoggedInUser(User user) {
         loggedInUser = user;
@@ -149,4 +166,7 @@ public class User {
         return false;
     }
 
+    public static ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
 }
