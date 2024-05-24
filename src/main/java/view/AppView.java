@@ -55,7 +55,7 @@ public class AppView extends Application {
                 address = "/FXML/Register.fxml";
                 break;
             case "Game":
-                address = "/FXML/Register.fxml";
+                address = "/FXML/Game.fxml";
                 break;
         }
         try {

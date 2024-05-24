@@ -4,7 +4,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-
+import view.AppView;
+import Enum.Menu;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,7 +34,8 @@ public class MainViewController extends ViewController implements Initializable 
 
     @FXML
     public void startGameAction() {
-
+        throwAlert("Starting Game!", "");
+        AppView.setRootForMenu(Menu.Game.getValue());
     }
 
     @FXML

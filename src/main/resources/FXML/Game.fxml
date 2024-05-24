@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="view.Controller.GameViewController">
+    <!-- Top area for opponent's hand -->
+    <top>
+        <HBox fx:id="opponentHand" spacing="10" alignment="CENTER" style="-fx-background-color: lightgray;" />
+    </top>
+
+    <!-- Bottom area for player's hand -->
+    <bottom>
+        <HBox fx:id="playerHand" spacing="10" alignment="CENTER" style="-fx-background-color: lightgray;" />
+    </bottom>
+
+    <!-- Center area for the battlefield -->
+    <center>
+        <Pane fx:id="battlefield" style="-fx-background-color: green;" />
+    </center>
+
+    <!-- Left area for opponent's score -->
+    <left>
+        <Label fx:id="opponentScore" text="Opponent Score: 0" />
+    </left>
+
+    <!-- Right area for player's score -->
+    <right>
+        <Label fx:id="playerScore" text="Player Score: 0" />
+    </right>
+</BorderPane>
+
