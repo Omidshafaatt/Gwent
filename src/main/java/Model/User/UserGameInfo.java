@@ -1,8 +1,13 @@
 package Model.User;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class UserGameInfo {
 
     private User owner;
+    private int score = 0;
     private int highestScore;
     private int victoryCount;
     private int defeatCount;
@@ -49,6 +54,30 @@ public class UserGameInfo {
     }
 
     public int getUserRank() {
+        ArrayList<User> toBeSortedList = User.getAllUsers();
+        Collections.sort(toBeSortedList, new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                // positive or negative to be checked TODO
+                if (o1.getGameInfo().score > o2.getGameInfo().score)
+                    return 1;
+                if (o1.getGameInfo().score < o2.getGameInfo().score)
+                    return -1;
+                return 0;
+            }
+        });
+        for (int i = 0; i < toBeSortedList.size(); i++) {
+            if (toBeSortedList.get(i).equals(owner))
+                return i;
+        }
         return 0;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
     }
 }
