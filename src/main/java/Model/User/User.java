@@ -116,6 +116,9 @@ public class User {
     }
 
     public static User getUserByUsername(String username) {
+        for (User user : allUsers)
+            if (user.getUsername().equals(username))
+                return user;
         return null;
     }
 
@@ -124,12 +127,26 @@ public class User {
     }
 
     public static boolean doesUsernameExist(String username) {return false;}
+
     public static boolean doesNicknameExist(String nickname) {
         return false;
     }
+
     public static boolean doesEmailExist(String email) {
         return false;
     }
 
     public static User getLoggedInUser() {return loggedInUser;}
+
+    public static void setLoggedInUser(User user) {
+        loggedInUser = user;
+    }
+
+    public static boolean doesUserExist(String username) {
+        for (User user : allUsers)
+            if (user.username.equals(username))
+                return true;
+        return false;
+    }
+
 }

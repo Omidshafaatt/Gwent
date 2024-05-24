@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane fx:id="pane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../StyleSheets/Menus.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller.RegisterViewController">
+    <AnchorPane prefHeight="1080.0" prefWidth="1920.0">
+        <ImageView fitHeight="1080" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Pics/BackGrounds/registerMenu.png" />
+            </image>
+        </ImageView>
+    </AnchorPane>
+    <VBox alignment="CENTER" layoutX="800.0" layoutY="400.0" prefHeight="300.0" prefWidth="320.0" spacing="10">
+        <Label fx:id="createAccount" alignment="CENTER" contentDisplay="CENTER" prefHeight="42.0" prefWidth="320.0" text="Create an Account!" textFill="#e1d5d5">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+        <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Username" />
+        <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Password" />
+        <TextField fx:id="nickNameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Nickname" />
+        <TextField fx:id="emailField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Email" />
+        <Button fx:id="registerButton" onMouseClicked="#registerAction" prefHeight="42.0" prefWidth="154.0" text="Register" />
+    </VBox>
+</Pane>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<Pane fx:id="pane" prefHeight="1080.0" prefWidth="1920.0" styleClass="login-menu" stylesheets="@../StyleSheets/Menus.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.Controller.LoginViewController">
+    <AnchorPane>
+        <ImageView fitHeight="1080" fitWidth="1920" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../Pics/BackGrounds/loginMenu.jpg" />
+            </image>
+        </ImageView>
+       <VBox alignment="CENTER" layoutX="800.0" layoutY="400.0" spacing="10">
+           <TextField fx:id="usernameField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Username" />
+           <PasswordField fx:id="passwordField" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="42.0" prefWidth="320.0" promptText="Password" />
+           <Button fx:id="loginButton" onMouseClicked="#loginAction" prefHeight="42.0" prefWidth="154.0" text="Login" />
+           <Button fx:id="forgotPassword" onMouseClicked="#questionAction" prefHeight="42.0" prefWidth="154.0" text="Forgot Password" />
+           <Button fx:id="registerButton" onMouseClicked="#registerAction" styleClass="register-button" text="Don't have an account?" />
+       </VBox>
+    </AnchorPane>
+</Pane>
