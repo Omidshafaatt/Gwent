@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.control.Label?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="view.Controller.GameViewController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="view.Controller.GameViewController">
     <!-- Top area for opponent's hand -->
     <top>
-        <HBox fx:id="opponentHand" spacing="10" alignment="CENTER" style="-fx-background-color: lightgray;" />
+        <HBox fx:id="opponentHand" alignment="CENTER" spacing="10" style="-fx-background-color: lightgray;" />
     </top>
 
     <!-- Bottom area for player's hand -->
     <bottom>
-        <HBox fx:id="playerHand" spacing="10" alignment="CENTER" style="-fx-background-color: lightgray;" />
+        <HBox fx:id="playerHand" alignment="CENTER" spacing="10" style="-fx-background-color: lightgray;" />
     </bottom>
 
     <!-- Center area for the battlefield -->
     <center>
-        <Pane fx:id="battlefield" style="-fx-background-color: green;" />
+        <Pane fx:id="battlefield" style="-fx-background-color: green;">
+         <children>
+            <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Pics/BackGrounds/gameMenu.png" />
+               </image>
+            </ImageView>
+         </children></Pane>
     </center>
 
     <!-- Left area for opponent's score -->
@@ -31,4 +40,3 @@
         <Label fx:id="playerScore" text="Player Score: 0" />
     </right>
 </BorderPane>
-
