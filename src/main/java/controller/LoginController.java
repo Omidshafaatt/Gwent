@@ -16,7 +16,7 @@ public class LoginController {
             if (User.getUserByUsername(username).getPassword().equals(password)) {
                 User.setLoggedInUser(User.getUserByUsername(username));
                 return new Result("Logged in!", "Logging into game successfully.", true);
-            } else if (password.equals("")){
+            } else if (!password.equals("")){
                 return new Result("Wrong Password!", "Entered password is wrong.", false);
             } else {
                 return new Result("Empty password!", "You haven't field the password box yet.", false);

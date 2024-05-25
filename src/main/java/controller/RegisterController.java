@@ -3,7 +3,8 @@ package controller;
 import Model.Result;
 import Model.User.User;
 
-import java.awt.geom.RectangularShape;
+import Enum.LoginRegex;
+
 import java.security.SecureRandom;
 
 public class RegisterController {
@@ -50,13 +51,16 @@ public class RegisterController {
             RegisterController.nickname = nickname;
             RegisterController.email = email;
             return new Result("username already taken", false);
+        } else if (User.doesNicknameExist(nickname)) {
+            return new Result("nickname already taken", false);
         } else {
-            return new Result("username already taken", false);// just to complete here
-            // change later
+            User user = new User(username, password, nickname, email);
+            return new Result("registered successfully", true);
         }
     }
 
     public Result confirmRegister() {
+        // baraye terminal bood
         return new Result("successful", true);
     }
 
@@ -69,13 +73,20 @@ public class RegisterController {
     public Result register(String username, String nickname, String email) {
         if (User.doesUserExist(username)) {
             RegisterController.username = username + "-"; // later
-            RegisterController.password = password;
             RegisterController.nickname = nickname;
             RegisterController.email = email;
+            password = generateStrongPassword();
             return new Result("username already taken", false);
+        }
+        if (LoginRegex.VALID_USERNAME.matches(username)) {
+            return new Result("username is not valid", false);
+        } else if (LoginRegex.VALID_EMAIL.matches(email)) {
+            return new Result("email is not valid", false);
+        } else if (LoginRegex.VALID_USERNAME.matches(username)) {
+            return new Result("username is not valid", false);
         } else {
-            return new Result("username already taken", false);// just to complete here
-            // change later
+            User user = new User(username, password, nickname, email);
+            return new Result("register successful", true);
         }
     }
 

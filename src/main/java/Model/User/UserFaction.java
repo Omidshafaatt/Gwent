@@ -27,15 +27,25 @@ public class UserFaction {
         return this.currentLeader;
     }
 
-    public void addCardToStorage(Card card) {}
+    public void addCardToStorage(Card card) {
+        storage.add(card);
+    }
 
-    public void addCardToDeck(Card card) {}
+    public void addCardToDeck(Card card) {
+        deck.add(card);
+    }
 
-    public void removeCardFromStorage(Card card) {}
+    public void removeCardFromStorage(Card card) {
+        storage.remove(card);
+    }
 
-    public void removeCardFromDeck(Card card) {}
+    public void removeCardFromDeck(Card card) {
+        deck.remove(card);
+    }
 
-    public void addCardToLeaderCards(Card card) {}
+    public void addCardToLeaderCards(Card card) {
+        leaderCards.add(card);
+    }
 
     public Card getDeckCardByName(String name) {
         for (Card card : deck)

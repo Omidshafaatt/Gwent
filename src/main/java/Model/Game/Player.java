@@ -106,50 +106,124 @@ public class Player {
         this.canPlayLeader = canPlayLeader;
     }
 
-    public void addToHand(Card card) {}
+    public void addToHand(Card card) {
+        user.getCardInventory().getCurrentFaction().removeCardFromDeck(card);
+        removeFromHand(card);
+    }
 
-    public void addToDiscardPile(Card card) {}
+    public void addToDiscardPile(Card card) {
+        removeFromHand(card);
+        discardPile.add(card);
+    }
 
-    public void addToCloseRowCards(Card card) {}
+    public void addToCloseRowCards(Card card) {
+        removeFromHand(card);
+        closeRowCards.remove(card);
+    }
 
-    public void addToRangedRowCards(Card card) {}
+    public void addToRangedRowCards(Card card) {
+        removeFromHand(card);
+        rangedRowCards.remove(card);
+    }
 
-    public void addToSiegeRowCards(Card card) {}
+    public void addToSiegeRowCards(Card card) {
+        removeFromHand(card);
+        siegeRowCards.add(card);
+    }
 
-    public void addToCommandersHornFields(SpellCard spellCard) {}
+    public void addToCommandersHornFields(SpellCard spellCard) {
+        // ? chera ArrayList nist dash
+    }
 
-    public void removeFromDeck(Card card) {}
+    public void removeFromDeck(Card card) {
+        user.getCardInventory().getCurrentFaction().removeCardFromDeck(card);
+    }
 
-    public void removeFromHand(Card card) {}
+    public void removeFromHand(Card card) {
+        hand.remove(card);
+    }
 
-    public void removeFromDiscardPile(Card card) {}
+    public void removeFromDiscardPile(Card card) {
+        discardPile.remove(card);
+    }
 
-    public void removeFromCloseRowCards(Card card) {}
+    public void removeFromCloseRowCards(Card card) {
+        closeRowCards.remove(card);
+    }
 
-    public void removeFromRangedRowCards(Card card) {}
+    public void removeFromRangedRowCards(Card card) {
+        rangedRowCards.remove(card);
+    }
 
-    public void removeFromSiegeRowCards(Card card) {}
+    public void removeFromSiegeRowCards(Card card) {
+        siegeRowCards.remove(card);
+    }
 
-    public void removeFromCommandersHornFields(SpellCard spellCard) {}
+    public void removeFromCommandersHornFields(SpellCard spellCard) {
+        // ? chera ArrayList nist dash
+    }
 
-    public int getCloseRowStrength() {return 0;}
+    public int getCloseRowStrength() {
+        int strength = 0;
+        for (Card card : closeRowCards) {
+            // strength to card ha nabood TODO
+        }
+        return 0;
+    }
 
-    public String showCloseRowCards() {return null;}
+    public String showCloseRowCards() {
+        StringBuilder report = new StringBuilder();
+        for (Card card : closeRowCards) {
+            report.append(card.getCardName()).append("\n");
+        }
+        return report.toString();
+    }
 
-    public int getRangedRowStrength() {return 0;}
+    public int getRangedRowStrength() {
+        int strength = 0;
+        for (Card card : rangedRowCards) {
+            // strength to card ha nabood TODO
+        }
+        return 0;
+    }
 
-    public String showRangedRowCards() {return null;}
+    public String showRangedRowCards() {
+        StringBuilder report = new StringBuilder();
+        for (Card card : rangedRowCards) {
+            report.append(card.getCardName()).append("\n");
+        }
+        return report.toString();
+    }
 
-    public int getSiegeRowStrength() {return 0;}
+    public int getSiegeRowStrength() {
+        int strength = 0;
+        for (Card card : siegeRowCards) {
+            // strength to card ha nabood TODO
+        }
+        return 0;
+    }
 
-    public String showSiegeRowCards() {return null;}
-    public void nextRound() {}
+    public String showSiegeRowCards() {
+        StringBuilder report = new StringBuilder();
+        for (Card card : siegeRowCards) {
+            report.append(card.getCardName()).append("\n");
+        }
+        return report.toString();
+    }
 
-    private void applyFactionAbility() {}
+    public void nextRound() {
+    }
 
-    private void putSavedCards() {}
+    private void applyFactionAbility() {
+    }
 
-    private void removeSavedCards() {}
+    private void putSavedCards() {
+    }
 
-    private boolean doesOpponentHasCancelLeader() {return false;}
+    private void removeSavedCards() {
+    }
+
+    private boolean doesOpponentHasCancelLeader() {
+        return false;
+    }
 }

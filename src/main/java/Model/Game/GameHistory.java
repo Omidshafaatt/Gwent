@@ -72,6 +72,7 @@ public class GameHistory {
     }
 
     public void end() {
+        // TODO this should be completed when working on game
         user1.getGameInfo().addScore(getUser1TotalScore());
         user2.getGameInfo().addScore(getUser2TotalScore());
     }
