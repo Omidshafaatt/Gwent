@@ -1,37 +1,134 @@
 package Model.Game;
 
-import Model.Card.Card;
-import Model.Card.LeaderCard;
-import Model.Card.SpellCard;
+import Model.InGameObjects.Abilities.FactionAbility.*;
+import Model.InGameObjects.Board.Board;
+import Model.InGameObjects.Cards.Card;
+import Model.InGameObjects.Cards.LeaderCard;
+import Model.InGameObjects.Cards.SpellCard;
+import Model.InGameObjects.Cards.UnitCard;
 import Model.User.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
-public class Player {
+import Enum.*;
+import controller.GameController;
+import javafx.scene.layout.Pane;
+
+public class Player implements Serializable {
 
     private User user;
     private GameObject gameObject;
+    private Player opponent;
+    private Board board;
+    private Pane gamePane;
+    private GameController gameController;
     private int remainingGems;
-    private boolean hasPassed;
-    private boolean canPlayLeader; // both already played leader and Emhier white flame ability affects
-    private String playersFaction;
+    private boolean paralyzedByAnimation;
+    private boolean hasOpponentSwappedInitialHand;
+    private PlayerState playerState;
+    private FactionName playersFaction;
+    private FactionAbility factionAbility;
     private LeaderCard leaderCard;
+    private Card selectedCard;
     private ArrayList<Card> hand = new ArrayList<>();
     private ArrayList<Card> deck = new ArrayList<>();
-    private ArrayList<Card> discardPile = new ArrayList<>();
-    private ArrayList<Card> closeRowCards = new ArrayList<>();
-    private ArrayList<Card> rangedRowCards = new ArrayList<>();
-    private ArrayList<Card> siegeRowCards = new ArrayList<>();
-    private SpellCard[] commandersHornFields = new SpellCard[3];
 
-    public Player(User user, String playersFaction, ArrayList<Card> deck, LeaderCard leaderCard) {
+    public Player(User user, FactionName playersFaction, ArrayList<Card> deck, LeaderCard leaderCard) {
         this.user = user;
         this.playersFaction = playersFaction;
         this.deck = deck;
-        // give 10 random cards from the deck to hand
         this.leaderCard = leaderCard;
-        this.canPlayLeader = doesOpponentHasCancelLeader();
         this.remainingGems = 2;
+        this.gameController = new GameController(this);
+        this.hasOpponentSwappedInitialHand = false;
+
+        assignOwnerAndPlayerToCards(deck);
+        assignOwnerAndPlayerToLeader();
+    }
+
+    private FactionAbility createFactionAbility() {
+        switch (playersFaction) {
+            case NilfgaardianEmpire:
+                return new NilfgaardAbility(gameObject.getCurrentPlayer(), this);
+            case NorthernRealms:
+                return new NorthernRealmsAbility(gameObject.getCurrentPlayer(), this);
+            case Monsters:
+                return new MonstersAbility(gameObject.getCurrentPlayer(), this);
+            case ScoiaTael:
+                return new ScoiaTaelAbility(gameObject.getCurrentPlayer(), this);
+            case Skellige:
+                return new SkelligeAbility(gameObject.getCurrentPlayer(), this);
+            case SevenKingdoms:
+                return new SevenKingdomsAbility(gameObject.getCurrentPlayer(), this);
+        }
+        return null;
+    }
+
+    public void assignGameObject() {
+        this.gameObject = user.getCurrentGame();
+        this.factionAbility = createFactionAbility();
+    }
+
+    private void assignOwnerAndPlayerToCards(ArrayList<Card> cards) {
+        for (Card card : cards) {
+            card.setOwner(this);
+            card.setPlayer(this);
+        }
+    }
+
+    private void assignOwnerAndPlayerToLeader() {
+        leaderCard.setOwner(this);
+        leaderCard.setPlayer(this);
+    }
+
+    public Pane getGamePane() {
+        return gamePane;
+    }
+
+    public GameController getGameController() {
+        return gameController;
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public void setGamePane(Pane gamePane) {
+        this.gamePane = gamePane;
+    }
+
+    public boolean isParalyzedByAnimation() {
+        return paralyzedByAnimation;
+    }
+
+    public void setParalyzedByAnimation(boolean paralyzedByAnimation) {
+        this.paralyzedByAnimation = paralyzedByAnimation;
+    }
+
+    public boolean isHasOpponentSwappedInitialHand() {
+        return hasOpponentSwappedInitialHand;
+    }
+
+    public void setHasOpponentSwappedInitialHand(boolean hasOpponentSwappedInitialHand) {
+        this.hasOpponentSwappedInitialHand = hasOpponentSwappedInitialHand;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public Player getOpponent() {
+        return opponent;
+    }
+
+    public void setOpponent(Player opponent) {
+        this.opponent = opponent;
     }
 
     public User getUser() {
@@ -46,16 +143,24 @@ public class Player {
         return remainingGems;
     }
 
-    public boolean isHasPassed() {
-        return hasPassed;
+    public FactionAbility getFactionAbility() {
+        return factionAbility;
     }
 
-    public boolean isCanPlayLeader() {
-        return canPlayLeader;
+    public void setFactionAbility(FactionAbility factionAbility) {
+        this.factionAbility = factionAbility;
     }
 
-    public String getPlayersFaction() {
+    public PlayerState getPlayerState() {
+        return playerState;
+    }
+
+    public FactionName getPlayersFaction() {
         return playersFaction;
+    }
+
+    public Card getSelectedCard() {
+        return selectedCard;
     }
 
     public LeaderCard getLeaderCard() {
@@ -70,24 +175,16 @@ public class Player {
         return deck;
     }
 
-    public ArrayList<Card> getDiscardPile() {
-        return discardPile;
+    public void setLeaderCard(LeaderCard leaderCard) {
+        this.leaderCard = leaderCard;
     }
 
-    public ArrayList<Card> getCloseRowCards() {
-        return closeRowCards;
+    public void setHand(ArrayList<Card> hand) {
+        this.hand = hand;
     }
 
-    public ArrayList<Card> getRangedRowCards() {
-        return rangedRowCards;
-    }
-
-    public ArrayList<Card> getSiegeRowCards() {
-        return siegeRowCards;
-    }
-
-    public SpellCard[] getCommandersHornFields() {
-        return commandersHornFields;
+    public void setDeck(ArrayList<Card> deck) {
+        this.deck = deck;
     }
 
     public void setGameObject(GameObject gameObject) {
@@ -98,132 +195,80 @@ public class Player {
         this.remainingGems = remainingGems;
     }
 
-    public void setHasPassed(boolean hasPassed) {
-        this.hasPassed = hasPassed;
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
     }
 
-    public void setCanPlayLeader(boolean canPlayLeader) {
-        this.canPlayLeader = canPlayLeader;
+    public void setSelectedCard(Card selectedCard) {
+        this.selectedCard = selectedCard;
     }
 
-    public void addToHand(Card card) {
-        user.getCardInventory().getCurrentFaction().removeCardFromDeck(card);
-        removeFromHand(card);
-    }
+    public void setRandomHand() {
+        ArrayList<Integer> unitCardChosenIndexes = new ArrayList<>();
+        ArrayList<Integer> spellCardChosenIndexes = new ArrayList<>();
 
-    public void addToDiscardPile(Card card) {
-        removeFromHand(card);
-        discardPile.add(card);
-    }
+        Random random = new Random();
+        int chosenUnitCards = random.nextInt(3) + 7;
+        int totalCards = 10;
 
-    public void addToCloseRowCards(Card card) {
-        removeFromHand(card);
-        closeRowCards.remove(card);
-    }
-
-    public void addToRangedRowCards(Card card) {
-        removeFromHand(card);
-        rangedRowCards.remove(card);
-    }
-
-    public void addToSiegeRowCards(Card card) {
-        removeFromHand(card);
-        siegeRowCards.add(card);
-    }
-
-    public void addToCommandersHornFields(SpellCard spellCard) {
-        // ? chera ArrayList nist dash
-    }
-
-    public void removeFromDeck(Card card) {
-        user.getCardInventory().getCurrentFaction().removeCardFromDeck(card);
-    }
-
-    public void removeFromHand(Card card) {
-        hand.remove(card);
-    }
-
-    public void removeFromDiscardPile(Card card) {
-        discardPile.remove(card);
-    }
-
-    public void removeFromCloseRowCards(Card card) {
-        closeRowCards.remove(card);
-    }
-
-    public void removeFromRangedRowCards(Card card) {
-        rangedRowCards.remove(card);
-    }
-
-    public void removeFromSiegeRowCards(Card card) {
-        siegeRowCards.remove(card);
-    }
-
-    public void removeFromCommandersHornFields(SpellCard spellCard) {
-        // ? chera ArrayList nist dash
-    }
-
-    public int getCloseRowStrength() {
-        int strength = 0;
-        for (Card card : closeRowCards) {
-            // strength to card ha nabood TODO
+        if (getLeaderCard().getCardName().equals(CardNames.FRANCESCA_DAISY_OF_THE_VALLEY)) {
+            chosenUnitCards += 1;
+            totalCards += 1;
         }
-        return 0;
-    }
 
-    public String showCloseRowCards() {
-        StringBuilder report = new StringBuilder();
-        for (Card card : closeRowCards) {
-            report.append(card.getCardName()).append("\n");
+        for (int i = 0; i < chosenUnitCards;) {
+            int index = random.nextInt(getDeck().size());
+            if (unitCardChosenIndexes.contains(index))
+                continue;
+            Card card = getDeck().get(index);
+            if (!(card instanceof UnitCard))
+                continue;
+            unitCardChosenIndexes.add(index);
+            getHand().add(card);
+            card.createGraphicalFields();
+            i++;
         }
-        return report.toString();
-    }
 
-    public int getRangedRowStrength() {
-        int strength = 0;
-        for (Card card : rangedRowCards) {
-            // strength to card ha nabood TODO
+        for (int i = 0; i < totalCards - chosenUnitCards;) {
+            int index = random.nextInt(getDeck().size());
+            if (spellCardChosenIndexes.contains(index))
+                continue;
+            Card card = getDeck().get(index);
+            if (!(card instanceof SpellCard))
+                continue;
+            spellCardChosenIndexes.add(index);
+            getHand().add(card);
+            card.createGraphicalFields();
+            i++;
         }
-        return 0;
-    }
 
-    public String showRangedRowCards() {
-        StringBuilder report = new StringBuilder();
-        for (Card card : rangedRowCards) {
-            report.append(card.getCardName()).append("\n");
+        for (int i = 0; i < getHand().size(); i++) {
+            getHand().get(i).setPreviousState(CardStates.ROW_IN_GAME_HAND);
+            getHand().get(i).setCurrentState(CardStates.ROW_IN_GAME_HAND);
+            getHand().get(i).setCurrentPlaceInGame(getBoard().getHandArea());
+            getDeck().remove(getHand().get(i));
         }
-        return report.toString();
     }
 
-    public int getSiegeRowStrength() {
-        int strength = 0;
-        for (Card card : siegeRowCards) {
-            // strength to card ha nabood TODO
+    public void setInGameDeck() {
+        for (Card card : gameObject.getPlayer1().getDeck()) {
+            card.setPreviousState(CardStates.ROW_IN_GAME_DECK);
+            card.setCurrentState(CardStates.ROW_IN_GAME_DECK);
+            card.setCurrentPlaceInGame(getBoard().getFriendlyDeckArea());
         }
-        return 0;
     }
 
-    public String showSiegeRowCards() {
-        StringBuilder report = new StringBuilder();
-        for (Card card : siegeRowCards) {
-            report.append(card.getCardName()).append("\n");
+    public Card getOneRandomCardFromDeck() {
+        if (!getDeck().isEmpty()) {
+            Random random = new Random();
+            int index = random.nextInt(getDeck().size());
+            Card card = getDeck().get(index);
+            getDeck().remove(card);
+            card.createGraphicalFields();
+            getBoard().getFriendlyDeckArea().removeFromCardsOnSection(card);
+            getBoard().getFriendlyDeckArea().updateSection();
+            return card;
         }
-        return report.toString();
-    }
-
-    public void nextRound() {
-    }
-
-    private void applyFactionAbility() {
-    }
-
-    private void putSavedCards() {
-    }
-
-    private void removeSavedCards() {
-    }
-
-    private boolean doesOpponentHasCancelLeader() {
-        return false;
+        return null;
     }
 }

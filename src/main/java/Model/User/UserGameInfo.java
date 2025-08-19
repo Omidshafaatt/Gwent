@@ -1,10 +1,13 @@
 package Model.User;
 
+import Model.Game.GameHistory;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class UserGameInfo {
+public class UserGameInfo implements Serializable {
 
     private User owner;
     private int score = 0;
@@ -37,20 +40,31 @@ public class UserGameInfo {
         return drawCount;
     }
 
-    public void addHighestScore(int highestScore) {
-        this.highestScore = highestScore;
+    public void calculateHighestScore() {
+        int highest = 0;
+         for (GameHistory gameHistory : getOwner().getUserGameHistories()) {
+             if (getOwner().equals(gameHistory.getUser1())) {
+                 for (int score : gameHistory.getUser1EveryRoundScore())
+                     highest = Math.max(highest, score);
+             }
+             else {
+                 for (int score : gameHistory.getUser2EveryRoundScore())
+                     highest = Math.max(highest, score);
+             }
+         }
+         highestScore = highest;
     }
 
-    public void addVictoryCount(int victoryCount) {
-        this.victoryCount = victoryCount;
+    public void addVictoryCount(int count) {
+        victoryCount += count;
     }
 
-    public void addDefeatCount(int defeatCount) {
-        this.defeatCount = defeatCount;
+    public void addDefeatCount(int count) {
+        defeatCount += count;
     }
 
-    public void addDrawCount(int drawCount) {
-        this.drawCount = drawCount;
+    public void addDrawCount(int count) {
+        drawCount += count;
     }
 
     public int getUserRank() {
@@ -79,5 +93,40 @@ public class UserGameInfo {
 
     public void addScore(int score) {
         this.score += score;
+    }
+
+    public void calculateScore() {
+        int totalScore = 0;
+        for (GameHistory gameHistory : getOwner().getUserGameHistories()) {
+            if (getOwner().equals(gameHistory.getUser1())) {
+                for (int score : gameHistory.getUser1EveryRoundScore())
+                    totalScore += score;
+            }
+            else {
+                for (int score : gameHistory.getUser2EveryRoundScore())
+                    totalScore += score;
+            }
+        }
+        score = totalScore;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setHighestScore(int highestScore) {
+        this.highestScore = highestScore;
+    }
+
+    public void setVictoryCount(int victoryCount) {
+        this.victoryCount = victoryCount;
+    }
+
+    public void setDefeatCount(int defeatCount) {
+        this.defeatCount = defeatCount;
+    }
+
+    public void setDrawCount(int drawCount) {
+        this.drawCount = drawCount;
     }
 }

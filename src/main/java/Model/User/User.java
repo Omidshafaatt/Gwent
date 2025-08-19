@@ -1,10 +1,17 @@
 package Model.User;
 
+import Model.FriendRequest;
 import Model.Game.GameHistory;
+import Model.Game.GameObject;
+import Model.InGameObjects.Cards.Card;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class User {
+public class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private String username;
     private String password;
     private String nickname;
@@ -14,18 +21,29 @@ public class User {
     private ArrayList<GameHistory> userGameHistories = new ArrayList<>();
     private ArrayList<String> passwordQuestions = new ArrayList<>();
     private ArrayList<String> passwordAnswers = new ArrayList<>();
+    private ArrayList<String> friendsNames = new ArrayList<>();
+    private ArrayList<User> friends = new ArrayList<>();
+    private ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+    private ArrayList<String> friendRequestsLog = new ArrayList<>();
+    private ArrayList<String> gameRequestsLog = new ArrayList<>();
+    public boolean online = false;
     private boolean isPlayingGame;
-    private static User loggedInUser;
+    private transient GameObject currentGame;
+    private User opponentUser;
     private static ArrayList<User> allUsers = new ArrayList<>();
 
-    public User(String username, String password, String nickname, String email) {
+    public User(String username, String password, String nickname, String email, boolean addToDataBase) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;
         this.cardInventory = new UserCardInventory(this);
         this.gameInfo = new UserGameInfo(this);
-        allUsers.add(this);
+        if (addToDataBase) allUsers.add(this);
+    }
+
+    public void recreateUserCardInventory() {
+        this.cardInventory = new UserCardInventory(this);
     }
 
     public String getUsername() {
@@ -42,6 +60,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public User getOpponentUser() {
+        return opponentUser;
+    }
+
+    public void setOpponentUser(User opponentUser) {
+        this.opponentUser = opponentUser;
     }
 
     public UserGameInfo getGameInfo() {
@@ -62,6 +88,10 @@ public class User {
 
     public boolean isPlayingGame() {
         return isPlayingGame;
+    }
+
+    public GameObject getCurrentGame() {
+        return currentGame;
     }
 
     public void setCardInventory(UserCardInventory cardInventory) {
@@ -86,6 +116,10 @@ public class User {
 
     public void setPlayingGame(boolean playingGame) {
         isPlayingGame = playingGame;
+    }
+
+    public void setCurrentGame(GameObject currentGame) {
+        this.currentGame = currentGame;
     }
 
     public void setUsername(String username) {
@@ -118,13 +152,14 @@ public class User {
 
     public static User getUserByUsername(String username) {
         for (User user : allUsers)
-            if (user.getUsername().equals(username))
+            if (user.getUsername().equals(username)) {
                 return user;
+            }
         return null;
     }
 
     public String returnQuestion(int questionNumber) {
-        return passwordQuestions.get(questionNumber);
+        return passwordAnswers.get(questionNumber);
     }
 
     public static boolean doesUsernameExist(String username) {
@@ -151,14 +186,6 @@ public class User {
         return false;
     }
 
-    public static User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public static void setLoggedInUser(User user) {
-        loggedInUser = user;
-    }
-
     public static boolean doesUserExist(String username) {
         for (User user : allUsers)
             if (user.username.equals(username))
@@ -168,5 +195,68 @@ public class User {
 
     public static ArrayList<User> getAllUsers() {
         return allUsers;
+    }
+
+    public static void setAllUsers(ArrayList<User> allUsers) {
+        User.allUsers = allUsers;
+    }
+
+    public ArrayList<String> getFriendsNames() {
+        return friendsNames;
+    }
+
+    public void setFriendsNames(ArrayList<String> friendsNames) {
+        this.friendsNames = friendsNames;
+    }
+
+    public ArrayList<User> getFriends() {
+        return friends;
+    }
+
+    public ArrayList<FriendRequest> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public boolean isYourFriend(User user) {
+        for (User friend : this.getFriends())
+            if (user.getUsername().equals(friend.getUsername()))
+                return true;
+        return false;
+    }
+
+    public String isOnline() {
+        if (online) return "online";
+        else return "offline";
+    }
+
+    public ArrayList<String> getFriendRequestsLog() {
+        return friendRequestsLog;
+    }
+
+    public ArrayList<String> getGameRequestsLog() {
+        return gameRequestsLog;
+    }
+
+    public void removeAllCardsGraphics() {
+        for (Card card : cardInventory.getCurrentFaction().getDeck())
+            removeEveryGraphicalFieldOfCard(card);
+        removeEveryGraphicalFieldOfCard(cardInventory.getCurrentFaction().getCurrentLeader());
+    }
+    
+    private void removeEveryGraphicalFieldOfCard(Card card) {
+        card.removeGraphicalFields();
+        card.setCurrentPlaceInGame(null);
+        card.setPlayer(null);
+        card.setOwner(null);
+        card.setCurrentState(null);
+    }
+
+    public void checkForAnyGraphicalField() {
+        getCardInventory().getCurrentFaction().printAllCardsDetails();
+        getCardInventory().getNilfgaardEmpire().printAllCardsDetails();
+        getCardInventory().getNorthernRealms().printAllCardsDetails();
+        getCardInventory().getMonsters().printAllCardsDetails();
+        getCardInventory().getScoiaTael().printAllCardsDetails();
+        getCardInventory().getSkellige().printAllCardsDetails();
     }
 }

@@ -1,25 +1,56 @@
 package Model.User;
 
-import Model.Card.Card;
+import Model.InGameObjects.Cards.Card;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import Enum.FactionName;
+import Model.InGameObjects.Cards.CardFactory;
+import Model.InGameObjects.Cards.LeaderCard;
 
-public class UserFaction {
+public class UserFaction implements Serializable {
     private User owner;
-    private String factionName;
-    private ArrayList<Card> leaderCards = new ArrayList<>();
-    private Card currentLeader;
+    private FactionName factionName;
+    private ArrayList<LeaderCard> leaderCards = new ArrayList<>();
+    private LeaderCard currentLeader;
     private ArrayList<Card> deck = new ArrayList<>();
     private ArrayList<Card> storage = new ArrayList<>();
-    private static ArrayList<UserFaction> allUserFactions = new ArrayList<>();
 
-    public UserFaction(User owner, String factionName) {
+    public UserFaction(User owner, FactionName factionName) {
         this.owner = owner;
         this.factionName = factionName;
-        allUserFactions.add(this);
+        createFactionCards();
     }
 
-    public void setCurrentLeader(Card currentLeader) {
+    private void createFactionCards() {
+        ArrayList<Card> factionInventory = CardFactory.cloneAllCardsOfFaction(factionName);
+        for (Card card : factionInventory) {
+            if (card instanceof LeaderCard) {
+                leaderCards.add((LeaderCard) card);
+                currentLeader = (LeaderCard) card;
+            }
+        }
+
+        for (Card card : factionInventory) {
+            if (!(card instanceof LeaderCard)) {
+                storage.add(card);
+            }
+        }
+    }
+
+    public FactionName getFactionName() {
+        return factionName;
+    }
+    public ArrayList<Card> getDeck() {
+        return deck;
+    }
+    public ArrayList<Card> getStorage() {
+        return storage;
+    }
+    public ArrayList<LeaderCard> getLeaderCards() {
+        return leaderCards;
+    }
+    public void setCurrentLeader(LeaderCard currentLeader) {
         this.currentLeader = currentLeader;
     }
 
@@ -43,7 +74,7 @@ public class UserFaction {
         deck.remove(card);
     }
 
-    public void addCardToLeaderCards(Card card) {
+    public void addCardToLeaderCards(LeaderCard card) {
         leaderCards.add(card);
     }
 
@@ -78,5 +109,18 @@ public class UserFaction {
 
     public boolean isLeaderCardByNameExisting(String name) {
         return getDeckCardByName(name) != null;
+    }
+
+    public void printAllCardsDetails() {
+        currentLeader.printCardDetail();
+
+        for (Card card : leaderCards)
+            card.printCardDetail();
+
+        for (Card card : deck)
+            card.printCardDetail();
+
+        for (Card card : storage)
+            card.printCardDetail();
     }
 }

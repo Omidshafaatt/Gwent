@@ -13,6 +13,10 @@
     -fx-padding: 10 20;
 }
 
+.list-view {
+    -fx-background-color: #141414;
+}
+
 .button {
     -fx-font-size: 14px;
     -fx-background-color: #444444;
@@ -56,4 +60,8 @@
 .alert-message {
     -fx-font-size: 14px;
     -fx-text-fill: #ffffff;
+}
+
+.login-menu .list-view {
+    -fx-background-color: #141414;
 }

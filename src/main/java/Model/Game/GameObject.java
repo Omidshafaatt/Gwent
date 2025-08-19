@@ -1,22 +1,57 @@
 package Model.Game;
 
-import Model.Card.SpellCard;
+import Model.InGameObjects.Cards.Card;
+import view.Controller.GameViewController;
 
 import java.util.ArrayList;
 
 public class GameObject {
 
-    private GameHistory gameHistory;
-    private Player player1;
-    private Player player2;
+    private final GameHistory gameHistory;
+    private final Player player1;
+    private final Player player2;
     private Player currentPlayer;
-    private Player currentRoundsWinner;
-    private ArrayList<SpellCard> weatherField = new ArrayList<>();
+    private int turnNumber;
+    private int roundNumber;
+    private ArrayList<Card> allCards = new ArrayList<>();
+    private GameViewController gameViewController;
 
     public GameObject(Player player1, Player player2) {
         this.player1 = player1;
+        player1.getUser().setCurrentGame(this);
         this.player2 = player2;
+        player2.getUser().setCurrentGame(this);
         this.gameHistory = new GameHistory(player1.getUser(), player2.getUser());
+        turnNumber = 1;
+        roundNumber = 1;
+
+        allCards.addAll(player1.getDeck());
+        allCards.add(player1.getLeaderCard());
+        allCards.addAll(player2.getDeck());
+        allCards.add(player2.getLeaderCard());
+        setCardIds();
+    }
+
+    private void setCardIds() {
+        int id = 1;
+        for (Card card : allCards) {
+            card.setId(id++);
+        }
+    }
+
+    public ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
+    public Card getCardById(int id) {
+        for (Card card : allCards) {
+            if (card.getId() == 6660)
+                System.out.println(card.getId());
+            if (card.getId() == id)
+                return card;
+        }
+
+        return null;
     }
 
     public GameHistory getGameHistory() {
@@ -35,39 +70,35 @@ public class GameObject {
         return currentPlayer;
     }
 
-    public Player getCurrentRoundsWinner() {
-        return currentRoundsWinner;
+    public int getRoundNumber() {
+        return roundNumber;
     }
 
-    public ArrayList<SpellCard> getWeatherField() {
-        return weatherField;
+    public void addToRoundNumber() {
+        roundNumber++;
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
-    public void setCurrentRoundsWinner(Player currentRoundsWinner) {
-        this.currentRoundsWinner = currentRoundsWinner;
-    }
-
-    public void addToWeatherField(SpellCard spellCard) {}
-
-    public void removeFromWeatherField(SpellCard spellCard) {}
-
-    public boolean isWeatherFrosting() { return false;}
-
-    public boolean isWeatherFoggy() { return false;}
-
-    public boolean isWeatherRainy() { return false;}
-
-    public void nextRound() {}
-
     private void getPlayer1Score() {}
 
     private void getPlayer2Score() {}
 
-    private void setThisRoundGameHistoryData() {}
+    public int getTurnNumber() {
+        return turnNumber;
+    }
 
-    private void announceRoundWinner() {}
+    public void addTurnNumber() {
+        turnNumber++;
+    }
+
+    public GameViewController getGameViewController() {
+        return gameViewController;
+    }
+
+    public void setGameViewController(GameViewController gameViewController) {
+        this.gameViewController = gameViewController;
+    }
 }

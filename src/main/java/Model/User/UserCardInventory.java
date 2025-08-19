@@ -1,21 +1,28 @@
 package Model.User;
+import Enum.FactionName;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class UserCardInventory {
+public class UserCardInventory implements Serializable {
     private User owner;
     private UserFaction northernRealms;
     private UserFaction nilfgaardEmpire;
     private UserFaction monsters;
-    private UserFaction scoiatael;
+    private UserFaction scoiaTael;
     private UserFaction skellige;
+    private UserFaction sevenKingdoms;
     private UserFaction currentFaction;
 
-    private static ArrayList<UserCardInventory> allUserInventories = new ArrayList<>();
 
     public UserCardInventory(User owner) {
         this.owner = owner;
-        allUserInventories.add(this);
+        this.nilfgaardEmpire = new UserFaction(owner, FactionName.NilfgaardianEmpire);
+        this.northernRealms = new UserFaction(owner, FactionName.NorthernRealms);
+        this.monsters = new UserFaction(owner, FactionName.Monsters);
+        this.scoiaTael = new UserFaction(owner, FactionName.ScoiaTael);
+        this.skellige = new UserFaction(owner, FactionName.Skellige);
+        this.sevenKingdoms = new UserFaction(owner, FactionName.SevenKingdoms);
+        this.currentFaction = northernRealms;
     }
 
     public User getOwner() {
@@ -34,12 +41,16 @@ public class UserCardInventory {
         return monsters;
     }
 
-    public UserFaction getScoiatael() {
-        return scoiatael;
+    public UserFaction getScoiaTael() {
+        return scoiaTael;
     }
 
     public UserFaction getSkellige() {
         return skellige;
+    }
+
+    public UserFaction getSevenKingdoms() {
+        return sevenKingdoms;
     }
 
     public UserFaction getCurrentFaction() {
@@ -58,12 +69,16 @@ public class UserCardInventory {
         this.monsters = monsters;
     }
 
-    public void setScoiatael(UserFaction scoiatael) {
-        this.scoiatael = scoiatael;
+    public void setScoiaTael(UserFaction scoiaTael) {
+        this.scoiaTael = scoiaTael;
     }
 
     public void setSkellige(UserFaction skellige) {
         this.skellige = skellige;
+    }
+
+    public void setSevenKingdoms(UserFaction sevenKingdoms) {
+        this.sevenKingdoms = sevenKingdoms;
     }
 
     public void setCurrentFaction(UserFaction currentFaction) {

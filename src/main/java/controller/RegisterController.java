@@ -1,11 +1,13 @@
 package controller;
 
+import Model.DataSaver;
 import Model.Result;
 import Model.User.User;
 
 import Enum.LoginRegex;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class RegisterController {
     private static String username;
@@ -13,7 +15,7 @@ public class RegisterController {
     private static String nickname;
     private static String email;
 
-    public static String generateStrongPassword() {
+    public String generateStrongPassword() {
         String uppercaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
         String numbers = "0123456789";
@@ -45,18 +47,12 @@ public class RegisterController {
     }
 
     public Result register(String username, String password, String nickname, String email) {
-        if (User.doesUserExist(username)) {
-            RegisterController.username = username + "-"; // later
-            RegisterController.password = password;
-            RegisterController.nickname = nickname;
-            RegisterController.email = email;
-            return new Result("username already taken", false);
-        } else if (User.doesNicknameExist(nickname)) {
-            return new Result("nickname already taken", false);
-        } else {
-            User user = new User(username, password, nickname, email);
-            return new Result("registered successfully", true);
-        }
+        if (User.doesUserExist(username)) return new Result("that username taken try:", random(username), false);
+        if (!LoginRegex.VALID_USERNAME.matches(username)) return new Result("username invalid", false);
+        if (!LoginRegex.VALID_PASSWORD.matches(password)) return new Result("password invalid", false);
+        if (!LoginRegex.STRONG_PASSWORD.matches(password)) return new Result("password weak", false);
+        if (!LoginRegex.VALID_EMAIL.matches(email)) return new Result("email invalid", false);
+        return new Result("registered", true);
     }
 
     public Result confirmRegister() {
@@ -71,38 +67,39 @@ public class RegisterController {
     }
 
     public Result register(String username, String nickname, String email) {
-        if (User.doesUserExist(username)) {
-            RegisterController.username = username + "-"; // later
-            RegisterController.nickname = nickname;
-            RegisterController.email = email;
-            password = generateStrongPassword();
-            return new Result("username already taken", false);
-        }
-        if (LoginRegex.VALID_USERNAME.matches(username)) {
-            return new Result("username is not valid", false);
-        } else if (LoginRegex.VALID_EMAIL.matches(email)) {
-            return new Result("email is not valid", false);
-        } else if (LoginRegex.VALID_USERNAME.matches(username)) {
-            return new Result("username is not valid", false);
-        } else {
-            User user = new User(username, password, nickname, email);
-            return new Result("register successful", true);
-        }
+
+        return null;
     }
 
-    public String random() {
-        return "";
+    public static String random(String input) {
+        StringBuilder result = new StringBuilder(input);
+
+        Random random = new Random();
+        int length = random.nextInt(5) + 1; // Generate a random length for additional characters
+
+        for (int i = 0; i < length; i++) {
+            int choice = random.nextInt(3); // Randomly choose between adding numbers or a dash
+            if (choice == 0) {
+                result.append(random.nextInt(10)); // Add a random number
+            } else {
+                result.append('-'); // Add a dash
+            }
+        }
+
+        return result.toString();
     }
 
     public Result questionShow() {
         return null;
     }
 
-    public Result saveAnswer(String answer, String number) {
-        return null;
+    public void saveAnswer(String answer, String username) {
+        User.getUserByUsername(username).getPasswordAnswers().add(answer);
+        DataSaver.saveUsers(User.getAllUsers());
     }
 
-    public Result saveAnswer(String answer, int number) {
-        return null;
+    public void saveQuestion(String question, String username) {
+        User.getUserByUsername(username).getPasswordQuestions().add(question);
+        DataSaver.saveUsers(User.getAllUsers());
     }
 }

@@ -1,10 +1,12 @@
 package Model;
 
-public class Result {
+import java.io.Serializable;
+
+public class Result implements Serializable {
 
     private String title;
     private final String message;
-    private final boolean isSuccessful;
+    private boolean isSuccessful;
 
     public Result(String title, String message, boolean isSuccessful) {
         this.title = title;
@@ -32,5 +34,9 @@ public class Result {
     @Override
     public String toString() {
         return message;
+    }
+
+    public void setSuccessful(boolean successful) {
+        isSuccessful = successful;
     }
 }

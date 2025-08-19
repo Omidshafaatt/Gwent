@@ -11,6 +11,8 @@ public class GameHistory {
     private User user2;
     private Date gameDate;
     private User winner;
+    private boolean isResultDraw;
+    private boolean isGameFinished;
     private int roundsPlayed;
     private ArrayList<Integer> user1EveryRoundScore = new ArrayList<>();
     private ArrayList<Integer> user2EveryRoundScore = new ArrayList<>();
@@ -49,6 +51,14 @@ public class GameHistory {
         return roundsPlayed;
     }
 
+    public ArrayList<Integer> getUser1EveryRoundScore() {
+        return user1EveryRoundScore;
+    }
+
+    public ArrayList<Integer> getUser2EveryRoundScore() {
+        return user2EveryRoundScore;
+    }
+
     public ArrayList<Integer> getUserEveryRoundScore(User user) {
         if (user.equals(user1))
             return user1EveryRoundScore;
@@ -69,6 +79,30 @@ public class GameHistory {
             user1EveryRoundScore.add(score);
         else
             user2EveryRoundScore.add(score);
+    }
+
+    public void setUser1EveryRoundScore(ArrayList<Integer> user1EveryRoundScore) {
+        this.user1EveryRoundScore = user1EveryRoundScore;
+    }
+
+    public void setUser2EveryRoundScore(ArrayList<Integer> user2EveryRoundScore) {
+        this.user2EveryRoundScore = user2EveryRoundScore;
+    }
+
+    public boolean isGameFinished() {
+        return isGameFinished;
+    }
+
+    public void setGameFinished(boolean gameFinished) {
+        isGameFinished = gameFinished;
+    }
+
+    public boolean isResultDraw() {
+        return isResultDraw;
+    }
+
+    public void setResultDraw(boolean resultDraw) {
+        isResultDraw = resultDraw;
     }
 
     public void end() {
